@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import PlanJournalier from "./PlanJournalier";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const missions = [
@@ -12,6 +11,7 @@ function App() {
 
   const XP_PER_MISSION = 20;
   const maxXP = 1500;
+
   const today = new Date().toLocaleDateString();
 
   const [currentXP, setCurrentXP] = useState(() => {
@@ -69,6 +69,7 @@ function App() {
   };
 
   const xpPercent = (currentXP / maxXP) * 100;
+
   let rank = "Recrue";
   if (currentXP >= 1200) rank = "Commandant";
   else if (currentXP >= 900) rank = "Adjudant";
@@ -78,20 +79,17 @@ function App() {
   const activeDays = Object.values(history).filter(Boolean).length;
   const avgXP = activeDays ? Math.round(currentXP / activeDays) : 0;
 
-  // 👇 Routine du jour ici à modifier chaque soir
-  const routineDuJour = [
-    { heure: "06h45", action: "Réveil + eau + respiration", done: false },
-    { heure: "07h00", action: "Hygiène + habillage", done: false },
-    { heure: "07h10", action: "Lecture 10min + journal", done: false },
-    { heure: "07h30", action: "Préparation repas", done: false },
-    { heure: "09h00", action: "Départ travail", done: false },
-    { heure: "12h30", action: "Pause + marche rapide", done: false },
-    { heure: "18h15", action: "Retour + douche", done: false },
-    { heure: "19h00", action: "Entraînement bas du corps", done: false },
-    { heure: "20h00", action: "Repas sans écran", done: false },
-    { heure: "20h45", action: "Jeu vidéo (1h max)", done: false },
-    { heure: "21h45", action: "Lecture / respiration lente", done: false },
-    { heure: "22h30", action: "Coucher", done: false },
+  const planning = [
+    "Réveil à 5h15",
+    "Hygiène + habillage (5h15 - 5h30)",
+    "Petit café + journal (5h30 - 6h)",
+    "Départ travail (6h - 6h30)",
+    "Travail (6h30 - 14h)",
+    "Retour + repas (14h - 15h)",
+    "Temps libre / repos (15h - 16h30)",
+    "Missions / réflexion (16h30 - 17h30)",
+    "Préparation repas + soirée (18h - 21h)",
+    "Coupure écran + lecture + dodo (21h - 22h)"
   ];
 
   return (
@@ -145,8 +143,36 @@ function App() {
         </div>
       </div>
 
-      {/* Affichage de ta routine journalière */}
-      <PlanJournalier routine={routineDuJour} />
+      <div className="max-w-xl mx-auto bg-[#2a2f2d] rounded-xl p-6 shadow-lg mb-8">
+        <h2 className="text-xl font-bold text-center mb-4">🗓️ Planning du jour</h2>
+        <ul className="space-y-2">
+          {planning.map((task, i) => (
+            <li key={i} className="flex items-center space-x-3">
+              <input type="checkbox" className="form-checkbox h-5 w-5 text-green-500 bg-gray-800 border-gray-600" />
+              <span className="text-lg">{task}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="max-w-xl mx-auto bg-[#2a2f2d] rounded-xl p-6 shadow-lg">
+        <h3 className="text-lg font-semibold mb-4">Historique des 90 derniers jours</h3>
+        <div className="grid grid-cols-10 gap-1">
+          {Array.from({ length: 90 }, (_, i) => {
+            const date = new Date();
+            date.setDate(date.getDate() - (89 - i));
+            const key = date.toLocaleDateString();
+            const active = history[key];
+            return (
+              <div
+                key={i}
+                title={`${key} - ${active ? 'Actif' : 'Inactif'}`}
+                className={`w-6 h-6 rounded ${active ? 'bg-green-500' : 'bg-gray-700'}`}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
