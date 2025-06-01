@@ -20,6 +20,21 @@ function App() {
     "Nettoyage / rangement",
     "Etude / apprentissage 20 min",
   ];
+  const dailyRoutine = [
+  { hour: "05:00", task: "Réveil + Hygiène" },
+  { hour: "05:30", task: "Journal + Café salé" },
+  { hour: "06:00", task: "Trajet vers le travail" },
+  { hour: "07:30", task: "Début de journée de travail" },
+  { hour: "12:00", task: "Pause repas" },
+  { hour: "16:00", task: "Fin de journée / Trajet retour" },
+  { hour: "17:00", task: "Routine détente / Lecture" },
+  { hour: "18:00", task: "Entraînement physique" },
+  { hour: "19:00", task: "Douche + Dîner" },
+  { hour: "20:00", task: "Missions spéciales / Journal" },
+  { hour: "21:00", task: "Préparation au coucher (pas d’écran)" },
+  { hour: "22:00", task: "Sommeil" },
+];
+
 
   const XP_PER_MISSION = 20;
   const maxXP = 1500;
